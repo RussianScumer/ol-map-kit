@@ -1,1 +1,16 @@
 /* Package styles, shipped as `@korneevecin/ol-map-kit/style.css`. */
+.ol-popup {
+  position: absolute;
+  background: white;
+  color: black;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+  min-width: 200px;
+  pointer-events: auto;
+}
+.ol-popup h4 { margin: 0 0 6px; font-size: 15px; }
+.ol-popup hr { margin: 6px 0; border: none; border-top: 1px solid #ddd; }
+.ol-popup p { margin: 0 0 4px; }
+.ol-popup .popup-cluster { font-weight: bold; font-size: 14px; text-align: center; }
