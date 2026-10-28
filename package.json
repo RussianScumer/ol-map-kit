@@ -1,0 +1,59 @@
+{
+  "name": "@korneevecin/ol-map-kit",
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@10.28.1",
+  "description": "Framework-agnostic OpenLayers map core: base map, cluster layer, popup, selection box and route layers.",
+  "keywords": ["openlayers", "ol", "map", "cluster", "route", "typescript"],
+  "author": "Korneevec Ilia",
+  "license": "MIT",
+  "scripts": {
+    "build": "run-p type-check \"build-only {@}\" -- && pnpm run build-types && pnpm run build-css",
+    "build-only": "vite build",
+    "build-types": "tsc -p tsconfig.lib.json",
+    "build-css": "node -e \"require('node:fs').copyFileSync('src/style.css','dist/style.css')\"",
+    "type-check": "tsc --build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepack": "pnpm run build"
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.12.0"
+  },
+  "sideEffects": ["*.css"],
+  "files": ["dist"],
+  "main": "./dist/ol-map-kit.js",
+  "module": "./dist/ol-map-kit.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/ol-map-kit.js",
+      "default": "./dist/ol-map-kit.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "ol": "^10.9.0",
+    "ol-mapbox-style": "^13.4.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node24": "^24.0.4",
+    "@types/node": "^24.13.3",
+    "eslint": "^10.9.1",
+    "jiti": "^2.7.0",
+    "npm-run-all2": "^9.0.2",
+    "ol": "^10.9.0",
+    "ol-mapbox-style": "^13.4.1",
+    "typescript": "~6.0.0",
+    "typescript-eslint": "^8.69.0",
+    "vite": "^8.1.5",
+    "vitest": "^4.1.11"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

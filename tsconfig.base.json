@@ -1,0 +1,22 @@
+// Compiler options shared by the app, vitest and lib configs (what `@vue/tsconfig` provided in the
+// template, minus the Vue-specific parts). Not referenced directly by `tsc --build`.
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    // No ambient `@types/*`; specs import their APIs from `vitest` explicitly.
+    "types": [],
+    "strict": true,
+    // Extra safety for array and object lookups, but may have false positives.
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true,
+    "useDefineForClassFields": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  }
+}

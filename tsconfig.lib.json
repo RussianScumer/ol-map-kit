@@ -1,0 +1,14 @@
+// Declaration-only build of the library entry. Extends the base, not `tsconfig.app.json`, because a
+// plain `tsc -p` rejects `tsBuildInfoFile` without `incremental`.
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/__tests__/*"],
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist/types",
+    "rootDir": "./src"
+  }
+}
