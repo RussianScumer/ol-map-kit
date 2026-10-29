@@ -1,6 +1,6 @@
 import { createPickMarkerLayer, parseNominatimResult } from '../src/index'
 import type { NominatimRawResult } from '../src/index'
-import { byId, setStatus } from './dom'
+import { byId, errorMessage, setStatus } from './dom'
 import type { DemoContext } from './dom'
 
 const MIN_INTERVAL_MS = 1100
@@ -64,7 +64,7 @@ export function setupPickDemo({ map, getMode }: DemoContext): void {
       setStatus('Nominatim: done')
     } catch (err) {
       console.warn('Nominatim request failed', err)
-      setStatus(`Nominatim failed: ${err instanceof Error ? err.message : String(err)}`, true)
+      setStatus(`Nominatim failed: ${errorMessage(err)}`, true)
     } finally {
       inFlight = false
       geocodeBtn.disabled = picked === null

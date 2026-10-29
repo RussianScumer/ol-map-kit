@@ -3,13 +3,15 @@ import Point from 'ol/geom/Point'
 import type MapBrowserEvent from 'ol/MapBrowserEvent'
 import {
   createClusterLayer,
+  DEFAULT_PALETTE,
   createPopup,
   featureAtPixel,
+  fitToSource,
   paletteColor,
   setupSelectionRect,
 } from '../src/index'
 import type { ClusterLayerHandle, LngLat, SelectionChange, SelectionRectHandle } from '../src/index'
-import { byId, fitSource, setStatus } from './dom'
+import { byId, setStatus } from './dom'
 import type { DemoContext } from './dom'
 import { generatePoints, majorityResolveFill } from './sampleData'
 
@@ -57,7 +59,7 @@ export function setupClusterDemo({ map, getMode }: DemoContext): void {
 
   function load(): void {
     handle.source.clear()
-    const points = generatePoints(Number(countEl.value), Number(seedEl.value), colorsEl.checked)
+    const points = generatePoints(Math.min(5000, Math.max(1, Math.trunc(Number(countEl.value)) || 1)), Number(seedEl.value), colorsEl.checked)
     handle.source.addFeatures(
       points.map(({ id, coord, color }) => {
         const f = new Feature({ geometry: new Point(coord), id, selected: false })
@@ -94,7 +96,7 @@ export function setupClusterDemo({ map, getMode }: DemoContext): void {
 
   byId('cl-recolor', HTMLButtonElement).addEventListener('click', () => {
     for (const f of handle.source.getFeatures()) {
-      f.set('color', paletteColor(Math.floor(Math.random() * 12)), true)
+      f.set('color', paletteColor(Math.floor(Math.random() * DEFAULT_PALETTE.length)), true)
     }
     setStatus('Colors changed silently: press refreshStyles()')
   })
@@ -107,7 +109,7 @@ export function setupClusterDemo({ map, getMode }: DemoContext): void {
     renderSelected()
   })
   byId('cl-fit', HTMLButtonElement).addEventListener('click', () => {
-    fitSource(map, handle.source)
+    fitToSource(map, handle.source, { padding: [40, 40, 40, 40], maxZoom: 15 })
   })
 
   map.on('click', (e: MapBrowserEvent) => {

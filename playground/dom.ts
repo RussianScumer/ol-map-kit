@@ -1,7 +1,4 @@
 import type OlMap from 'ol/Map'
-import type VectorSource from 'ol/source/Vector'
-import { createEmpty } from 'ol/extent'
-import { fitToSource } from '../src/index'
 
 export type ClickMode = 'cluster' | 'pick'
 
@@ -23,10 +20,6 @@ export function setStatus(text: string, isError = false): void {
   el.classList.toggle('error', isError)
 }
 
-/**
- * `fitToSource` types `getExtent` as returning `Extent`, but `VectorSource#getExtent` may return
- * `null`; an empty extent is passed instead, which `fitToSource` skips.
- */
-export function fitSource(map: OlMap, source: VectorSource): void {
-  fitToSource(map, { getExtent: () => source.getExtent() ?? createEmpty() }, { padding: [40, 40, 40, 40], maxZoom: 15 })
+export function errorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err)
 }

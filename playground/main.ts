@@ -3,7 +3,7 @@ import '../src/style.css'
 import './playground.css'
 import { applyBackground, applyStyle } from 'ol-mapbox-style'
 import { createBaseMap } from '../src/index'
-import { byId, setStatus } from './dom'
+import { byId, errorMessage, setStatus } from './dom'
 import type { ClickMode, DemoContext } from './dom'
 import { setupClusterDemo } from './clusterDemo'
 import { setupRouteDemo } from './routeDemo'
@@ -17,7 +17,7 @@ const STYLE_URLS = {
 
 function reportError(what: string, err: unknown): void {
   console.warn(what, err)
-  setStatus(`${what}: ${err instanceof Error ? err.message : String(err)}`, true)
+  setStatus(`${what}: ${errorMessage(err)}`, true)
 }
 
 const base = createBaseMap(byId('map', HTMLDivElement), {

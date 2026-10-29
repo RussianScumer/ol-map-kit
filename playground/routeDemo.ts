@@ -1,7 +1,7 @@
-import { createMultiRouteLayer, createRouteLayer } from '../src/index'
+import { createMultiRouteLayer, createRouteLayer, fitToSource } from '../src/index'
 import type VectorLayer from 'ol/layer/Vector'
 import type VectorSource from 'ol/source/Vector'
-import { byId, fitSource } from './dom'
+import { byId } from './dom'
 import type { DemoContext } from './dom'
 import { MULTI_ROUTE_SAMPLE, ROUTE_SAMPLE } from './sampleData'
 
@@ -15,7 +15,7 @@ export function setupRouteDemo({ map }: DemoContext): void {
     byId(fitId, HTMLButtonElement).addEventListener('click', () => {
       const source = layer.getSource()
       if (source === null) return
-      fitSource(map, source)
+      fitToSource(map, source, { padding: [40, 40, 40, 40], maxZoom: 15 })
     })
   }
   wire(createRouteLayer(ROUTE_SAMPLE), 'rt-route', 'rt-route-fit')

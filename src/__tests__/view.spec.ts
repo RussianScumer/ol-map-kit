@@ -5,7 +5,7 @@ import { fitToSource } from '../view'
 
 const options = { padding: [50, 50, 50, 50], maxZoom: 7 }
 
-function setup(extent: Extent) {
+function setup(extent: Extent | null) {
   const fit = vi.fn()
   const map = { getView: () => ({ fit }) } as unknown as OlMap
   fitToSource(map, { getExtent: () => extent }, options)
@@ -21,6 +21,10 @@ describe('fitToSource', () => {
 
   it('skips an empty extent', () => {
     expect(setup([Infinity, Infinity, -Infinity, -Infinity])).not.toHaveBeenCalled()
+  })
+
+  it('skips a null extent', () => {
+    expect(setup(null)).not.toHaveBeenCalled()
   })
 
   it('skips NaN extents', () => {
