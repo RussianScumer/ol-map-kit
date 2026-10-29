@@ -1,0 +1,10 @@
+// Type-checks the dev playground (served by `vite.playground.config.ts`, never published).
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["playground/**/*.ts"],
+  "compilerOptions": {
+    // `vite/client` declares `*.css` modules for the side-effect CSS imports.
+    "types": ["vite/client"],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.playground.tsbuildinfo"
+  }
+}

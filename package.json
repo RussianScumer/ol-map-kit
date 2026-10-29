@@ -8,6 +8,7 @@
   "author": "Korneevec Ilia",
   "license": "MIT",
   "scripts": {
+    "dev": "vite --config vite.playground.config.ts",
     "build": "run-p type-check \"build-only {@}\" -- && pnpm run build-types && pnpm run build-css",
     "build-only": "vite build",
     "build-types": "tsc -p tsconfig.lib.json",

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ol-map-kit playground</title>
+  </head>
+  <body>
+    <div id="map"></div>
+    <aside id="panel">
+      <h1>ol-map-kit playground</h1>
+      <div id="status" role="status">Loading style…</div>
+
+      <section>
+        <h2>Base map</h2>
+        <label><input type="radio" name="style" id="style-light" checked /> Light</label>
+        <label><input type="radio" name="style" id="style-dark" /> Dark</label>
+      </section>
+
+      <section>
+        <h2>Click mode</h2>
+        <label><input type="radio" name="mode" id="mode-cluster" checked /> Cluster</label>
+        <label><input type="radio" name="mode" id="mode-pick" /> Pick</label>
+        <p class="hint">
+          cluster: click = popup, ctrl-click = toggle selection, shift-drag = box select; pick: click =
+          place marker
+        </p>
+      </section>
+
+      <section>
+        <h2>Cluster layer</h2>
+        <label>Points <input type="number" id="cl-count" min="1" max="5000" value="300" /></label>
+        <label>Seed <input type="number" id="cl-seed" value="1" /></label>
+        <label><input type="checkbox" id="cl-colors" checked /> Per-point colors</label>
+        <label>
+          Distance <input type="range" id="cl-distance" min="0" max="100" value="40" />
+          <span id="cl-distance-value">40</span>
+        </label>
+        <label><input type="checkbox" id="cl-custom-fill" /> Custom resolveFill (majority color)</label>
+        <div class="buttons">
+          <button type="button" id="cl-regenerate">Regenerate</button>
+          <button type="button" id="cl-recolor">Recolor silently</button>
+          <button type="button" id="cl-refresh">refreshStyles()</button>
+          <button type="button" id="cl-clear">Clear selection</button>
+          <button type="button" id="cl-fit">Fit</button>
+        </div>
+        <h3>Selected</h3>
+        <pre id="cl-selected"></pre>
+        <h3>Last change</h3>
+        <pre id="cl-last-change"></pre>
+      </section>
+
+      <section>
+        <h2>Routes</h2>
+        <div class="row">
+          <label><input type="checkbox" id="rt-route" checked /> Route</label>
+          <button type="button" id="rt-route-fit">Fit</button>
+        </div>
+        <div class="row">
+          <label><input type="checkbox" id="rt-multi" checked /> Multi-route</label>
+          <button type="button" id="rt-multi-fit">Fit</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Pick marker &amp; Nominatim</h2>
+        <p class="hint">
+          Reverse geocoding uses the public nominatim.openstreetmap.org service, one request per button
+          press
+        </p>
+        <div>Picked: <span id="pk-coord">none</span></div>
+        <div class="buttons">
+          <button type="button" id="pk-clear">Clear marker</button>
+          <button type="button" id="pk-geocode" disabled>Reverse geocode</button>
+        </div>
+        <h3>Parsed</h3>
+        <pre id="pk-parsed"></pre>
+        <h3>Raw</h3>
+        <pre id="pk-raw"></pre>
+      </section>
+
+      <section>
+        <h2>Palette &amp; pins</h2>
+        <label><input type="checkbox" id="pv-layer" /> Show style preview layer on map</label>
+        <div id="pv-palette"></div>
+      </section>
+    </aside>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
