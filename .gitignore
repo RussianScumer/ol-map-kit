@@ -33,3 +33,9 @@ coverage
 
 # Pack artifacts
 *.tgz
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

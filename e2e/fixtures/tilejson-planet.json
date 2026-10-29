@@ -1,0 +1,10 @@
+{
+  "tilejson": "3.0.0",
+  "name": "e2e stub of the OpenFreeMap planet TileJSON",
+  "scheme": "xyz",
+  "tiles": ["https://tiles.openfreemap.org/planet/{z}/{x}/{y}.pbf"],
+  "minzoom": 0,
+  "maxzoom": 14,
+  "bounds": [-180, -85.0511, 180, 85.0511],
+  "vector_layers": []
+}

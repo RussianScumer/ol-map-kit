@@ -1,0 +1,26 @@
+{
+  "place_id": 123456789,
+  "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+  "osm_type": "way",
+  "osm_id": 38599281,
+  "lat": "55.7500000",
+  "lon": "37.6200000",
+  "category": "highway",
+  "type": "pedestrian",
+  "place_rank": 26,
+  "importance": 0.1,
+  "addresstype": "road",
+  "name": "Red Square",
+  "display_name": "Red Square, Tverskoy District, Moscow, Central Federal District, 109012, Russia",
+  "address": {
+    "road": "Red Square",
+    "suburb": "Tverskoy District",
+    "city": "Moscow",
+    "state": "Moscow",
+    "region": "Central Federal District",
+    "postcode": "109012",
+    "country": "Russia",
+    "country_code": "ru"
+  },
+  "boundingbox": ["55.7490000", "55.7510000", "37.6190000", "37.6210000"]
+}

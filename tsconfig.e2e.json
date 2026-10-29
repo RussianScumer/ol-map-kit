@@ -1,0 +1,10 @@
+// Type-checks the Playwright e2e specs, their support code and `playwright.config.ts`.
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["e2e/**/*.ts", "playwright.config.ts"],
+  "compilerOptions": {
+    // Node globals for the test runner side; DOM comes from the base `lib` for `page.evaluate` bodies.
+    "types": ["node"],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.e2e.tsbuildinfo"
+  }
+}
