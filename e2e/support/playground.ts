@@ -124,3 +124,28 @@ export async function setView(page: Page, center: [number, number], zoom: number
   )
   await waitForRenderComplete(page)
 }
+
+export const CLICK_GAP_MS = 300 // OL turns two clicks within 250 ms into a zooming `dblclick`
+export const CLICK_DY = -20 // a pin's tip at its coordinate is transparent; aim at the pin body
+export const EMPTY_SPOT: [number, number] = [37.2, 55.75] // west of every cluster point (lng min 37.35)
+const RENDER_TIMEOUT_MS = 10_000
+
+/** Bounds a support call that waits for `rendercomplete`, which has no timeout of its own. */
+export async function bounded(what: string, work: Promise<void>): Promise<void> {
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(
+      () => reject(new Error(`${what}: no rendercomplete within ${RENDER_TIMEOUT_MS} ms`)),
+      RENDER_TIMEOUT_MS,
+    )
+  })
+  try {
+    await Promise.race([work, timeout])
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+export async function waitViewIdle(page: Page): Promise<void> {
+  await page.waitForFunction(() => !window.__playground!.map.getView().getAnimating())
+}

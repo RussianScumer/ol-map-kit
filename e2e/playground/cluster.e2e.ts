@@ -1,27 +1,18 @@
 import type { Page } from '@playwright/test'
 import type Feature from 'ol/Feature.js'
 import type Point from 'ol/geom/Point.js'
-import { test, expect, waitForRenderComplete, setView } from '../support/playground'
+import {
+  test,
+  expect,
+  waitForRenderComplete,
+  setView,
+  bounded,
+  waitViewIdle,
+  CLICK_GAP_MS,
+  CLICK_DY,
+  EMPTY_SPOT,
+} from '../support/playground'
 
-const CLICK_GAP_MS = 300 // OL turns two clicks within 250 ms into a zooming `dblclick`
-const CLICK_DY = -20 // the pin tip at the cluster pixel is transparent; aim at the pin body
-const RENDER_TIMEOUT_MS = 10_000
-
-/** Bounds a support call that waits for `rendercomplete`, which has no timeout of its own. */
-async function bounded(what: string, work: Promise<void>): Promise<void> {
-  let timer: ReturnType<typeof setTimeout> | undefined
-  const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(
-      () => reject(new Error(`${what}: no rendercomplete within ${RENDER_TIMEOUT_MS} ms`)),
-      RENDER_TIMEOUT_MS,
-    )
-  })
-  try {
-    await Promise.race([work, timeout])
-  } finally {
-    clearTimeout(timer)
-  }
-}
 
 type ClusterStats = { sourceCount: number; clusterCount: number; memberSum: number; distinct: number }
 
@@ -47,7 +38,22 @@ async function clusterStats(page: Page): Promise<ClusterStats> {
 type ClickTarget = { x: number; y: number; count: number; ids: number[] }
 
 async function findCluster(page: Page, kind: 'multi' | 'single'): Promise<ClickTarget> {
-  const target = await page.evaluate(
+  let found: ClickTarget | null = null
+  // icons can decode after the first render, so the hit test may fail on the first attempt
+  await expect
+    .poll(
+      async () => {
+        found = await findClusterOnce(page, kind)
+        return found !== null
+      },
+      { message: `no clickable ${kind} cluster in view`, timeout: 5_000 },
+    )
+    .toBe(true)
+  return found!
+}
+
+async function findClusterOnce(page: Page, kind: 'multi' | 'single'): Promise<ClickTarget | null> {
+  return page.evaluate(
     ({ kind: wanted, dy }) => {
       const { map, cluster } = window.__playground!
       const handle = cluster()
@@ -70,8 +76,6 @@ async function findCluster(page: Page, kind: 'multi' | 'single'): Promise<ClickT
     },
     { kind, dy: CLICK_DY },
   )
-  if (!target) throw new Error(`no clickable ${kind} cluster in view`)
-  return target
 }
 
 async function selectedIds(page: Page): Promise<number[]> {
@@ -83,10 +87,6 @@ async function selectedIds(page: Page): Promise<number[]> {
       .map((f) => f.get('id') as number)
       .sort((a, b) => a - b),
   )
-}
-
-async function waitViewIdle(page: Page): Promise<void> {
-  await page.waitForFunction(() => !window.__playground!.map.getView().getAnimating())
 }
 
 async function ctrlClick(page: Page, x: number, y: number): Promise<void> {
@@ -138,17 +138,17 @@ test.describe('cluster layer', () => {
     await expect(page.locator('.ol-popup .popup-cluster')).toHaveText(`${t.count} points`)
     await waitViewIdle(page)
 
-    const empty = await page.evaluate(() => {
+    const empty = await page.evaluate((spot) => {
       const { map, cluster } = window.__playground!
       const handle = cluster()
-      const px = map.getPixelFromCoordinate([37.2, 55.75])
+      const px = map.getPixelFromCoordinate(spot)
       const rect = document.getElementById('map')!.getBoundingClientRect()
       const x = rect.left + px[0]!
       const y = rect.top + px[1]!
       const hit = map.forEachFeatureAtPixel(px, (f) => f, { layerFilter: (l) => l === handle.layer })
       const covered = document.elementFromPoint(x, y)?.closest('.ol-overlay-container') ?? null
       return { x, y, noHit: hit === undefined, uncovered: covered === null }
-    })
+    }, EMPTY_SPOT)
     expect(empty.noHit).toBe(true)
     expect(empty.uncovered).toBe(true)
     await page.waitForTimeout(CLICK_GAP_MS)

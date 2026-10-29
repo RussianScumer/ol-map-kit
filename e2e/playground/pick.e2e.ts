@@ -3,32 +3,18 @@ import type { Page } from '@playwright/test'
 import type Point from 'ol/geom/Point.js'
 import { parseNominatimResult } from '../../src/nominatim'
 import type { NominatimRawResult } from '../../src/nominatim'
-import { test, expect, waitForRenderComplete, pixelOf } from '../support/playground'
+import {
+  test,
+  expect,
+  waitForRenderComplete,
+  pixelOf,
+  bounded,
+  waitViewIdle,
+  CLICK_GAP_MS,
+  EMPTY_SPOT,
+} from '../support/playground'
 
-const CLICK_GAP_MS = 300
-const RENDER_TIMEOUT_MS = 10_000
 const NOMINATIM_REVERSE = 'https://nominatim.openstreetmap.org/reverse'
-const EMPTY_SPOT: [number, number] = [37.2, 55.75] // west of every cluster point (lng min 37.35)
-
-/** Bounds a support call that waits for `rendercomplete`, which has no timeout of its own. */
-async function bounded(what: string, work: Promise<void>): Promise<void> {
-  let timer: ReturnType<typeof setTimeout> | undefined
-  const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(
-      () => reject(new Error(`${what}: no rendercomplete within ${RENDER_TIMEOUT_MS} ms`)),
-      RENDER_TIMEOUT_MS,
-    )
-  })
-  try {
-    await Promise.race([work, timeout])
-  } finally {
-    clearTimeout(timer)
-  }
-}
-
-async function waitViewIdle(page: Page): Promise<void> {
-  await page.waitForFunction(() => !window.__playground!.map.getView().getAnimating())
-}
 
 type Target = { x: number; y: number; lngLat: [number, number] }
 
@@ -134,13 +120,13 @@ test.describe('pick marker and Nominatim', () => {
 
     await expect(page.locator('#status')).toHaveText('Nominatim: done')
     await expect(page.locator('#status')).not.toHaveClass(/error/)
-    expect(await page.locator('#pk-parsed').textContent()).toBe(JSON.stringify(parseNominatimResult(raw), null, 2))
-    expect(await page.locator('#pk-raw').textContent()).toBe(JSON.stringify(raw, null, 2))
-    await expect.poll(reverseCount).toBe(1)
-
+    // second press must land within 1100 ms of the first, so do it before the slower assertions
     await page.locator('#pk-geocode').click()
     await expect(page.locator('#status')).toHaveText('Nominatim: wait a moment between requests')
     expect(reverseCount()).toBe(1)
+    expect(await page.locator('#pk-parsed').textContent()).toBe(JSON.stringify(parseNominatimResult(raw), null, 2))
+    expect(await page.locator('#pk-raw').textContent()).toBe(JSON.stringify(raw, null, 2))
+    await expect.poll(reverseCount).toBe(1)
   })
 
   test('reverse geocode reports HTTP 500', async ({ page }) => {

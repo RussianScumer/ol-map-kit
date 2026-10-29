@@ -1,26 +1,8 @@
 import type { Page } from '@playwright/test'
 import type LineString from 'ol/geom/LineString.js'
 import type Point from 'ol/geom/Point.js'
-import { test, expect, waitForRenderComplete, setView } from '../support/playground'
+import { test, expect, waitForRenderComplete, setView, bounded, CLICK_DY } from '../support/playground'
 
-const CLICK_DY = -20 // the pin tip at the coordinate is transparent; aim at the pin body
-const RENDER_TIMEOUT_MS = 10_000
-
-/** Bounds a support call that waits for `rendercomplete`, which has no timeout of its own. */
-async function bounded(what: string, work: Promise<void>): Promise<void> {
-  let timer: ReturnType<typeof setTimeout> | undefined
-  const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(
-      () => reject(new Error(`${what}: no rendercomplete within ${RENDER_TIMEOUT_MS} ms`)),
-      RENDER_TIMEOUT_MS,
-    )
-  })
-  try {
-    await Promise.race([work, timeout])
-  } finally {
-    clearTimeout(timer)
-  }
-}
 
 type LayerKey = 'routeLayer' | 'multiRouteLayer' | 'previewLayer'
 type Hit = { type: string; first: number[] }
