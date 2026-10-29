@@ -1,12 +1,20 @@
+import VectorLayer from 'ol/layer/Vector.js'
+import type VectorSource from 'ol/source/Vector.js'
 import { createPickMarkerLayer, parseNominatimResult } from '../src/index'
 import type { NominatimRawResult } from '../src/index'
 import { byId, errorMessage, setStatus } from './dom'
+import { registerHooks } from './hooks'
 import type { DemoContext } from './dom'
 
 const MIN_INTERVAL_MS = 1100
 
 export function setupPickDemo({ map, getMode }: DemoContext): void {
   const marker = createPickMarkerLayer(map, '#911eb4')
+  // `PickMarkerHandle` does not expose its layer; `createPickMarkerLayer` has just appended it.
+  const layers = map.getLayers()
+  const pickLayer = layers.item(layers.getLength() - 1)
+  if (!(pickLayer instanceof VectorLayer)) throw new Error('playground: pick marker layer not found')
+  registerHooks({ pickLayer: pickLayer as VectorLayer<VectorSource> })
   const coordEl = byId('pk-coord', HTMLSpanElement)
   const parsedEl = byId('pk-parsed', HTMLPreElement)
   const rawEl = byId('pk-raw', HTMLPreElement)

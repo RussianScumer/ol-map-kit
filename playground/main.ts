@@ -9,6 +9,7 @@ import { setupClusterDemo } from './clusterDemo'
 import { setupRouteDemo } from './routeDemo'
 import { setupPickDemo } from './pickDemo'
 import { setupPreviewDemo } from './previewDemo'
+import { registerHooks } from './hooks'
 
 const STYLE_URLS = {
   light: '/map_style_custom.min.json',
@@ -25,6 +26,7 @@ const base = createBaseMap(byId('map', HTMLDivElement), {
   center: [37.62, 55.75],
   zoom: 10,
 })
+registerHooks({ map: base.map })
 
 base.ready.then(() => setStatus('Style loaded')).catch((err: unknown) => reportError('Style failed', err))
 applyBackground(base.tileLayer, STYLE_URLS.light).catch((err: unknown) => reportError('Background failed', err))

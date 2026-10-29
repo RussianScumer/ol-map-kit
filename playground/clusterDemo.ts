@@ -13,6 +13,7 @@ import {
 import type { ClusterLayerHandle, LngLat, SelectionChange, SelectionRectHandle } from '../src/index'
 import { byId, setStatus } from './dom'
 import type { DemoContext } from './dom'
+import { registerHooks } from './hooks'
 import { generatePoints, majorityResolveFill } from './sampleData'
 
 const SELECTED_LIST_LIMIT = 100
@@ -74,6 +75,7 @@ export function setupClusterDemo({ map, getMode }: DemoContext): void {
 
   build()
   load()
+  registerHooks({ cluster: () => handle })
 
   byId('cl-regenerate', HTMLButtonElement).addEventListener('click', load)
 

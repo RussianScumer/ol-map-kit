@@ -1,6 +1,7 @@
 import { createMultiRouteLayer, createRouteLayer, fitToSource } from '../src/index'
 import type VectorLayer from 'ol/layer/Vector.js'
 import type VectorSource from 'ol/source/Vector.js'
+import { registerHooks } from './hooks'
 import { byId } from './dom'
 import type { DemoContext } from './dom'
 import { MULTI_ROUTE_SAMPLE, ROUTE_SAMPLE } from './sampleData'
@@ -18,6 +19,9 @@ export function setupRouteDemo({ map }: DemoContext): void {
       fitToSource(map, source, { padding: [40, 40, 40, 40], maxZoom: 15 })
     })
   }
-  wire(createRouteLayer(ROUTE_SAMPLE), 'rt-route', 'rt-route-fit')
-  wire(createMultiRouteLayer(MULTI_ROUTE_SAMPLE), 'rt-multi', 'rt-multi-fit')
+  const routeLayer = createRouteLayer(ROUTE_SAMPLE)
+  const multiRouteLayer = createMultiRouteLayer(MULTI_ROUTE_SAMPLE)
+  wire(routeLayer, 'rt-route', 'rt-route-fit')
+  wire(multiRouteLayer, 'rt-multi', 'rt-multi-fit')
+  registerHooks({ routeLayer, multiRouteLayer })
 }

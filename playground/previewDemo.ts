@@ -13,6 +13,7 @@ import {
   paletteColor,
   pinStyle,
 } from '../src/index'
+import { registerHooks } from './hooks'
 import { byId } from './dom'
 import type { DemoContext } from './dom'
 
@@ -60,6 +61,7 @@ export function setupPreviewDemo({ map }: DemoContext): void {
   })
   const layer = new VectorLayer({ source, visible: false, zIndex: 700 })
   map.addLayer(layer)
+  registerHooks({ previewLayer: layer })
   const toggle = byId('pv-layer', HTMLInputElement)
   toggle.addEventListener('change', () => {
     layer.setVisible(toggle.checked)
