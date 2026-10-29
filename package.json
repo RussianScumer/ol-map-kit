@@ -7,6 +7,14 @@
   "keywords": ["openlayers", "ol", "map", "cluster", "route", "typescript"],
   "author": "Korneevec Ilia",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RussianScumer/ol-map-kit.git"
+  },
+  "homepage": "https://github.com/RussianScumer/ol-map-kit#readme",
+  "bugs": {
+    "url": "https://github.com/RussianScumer/ol-map-kit/issues"
+  },
   "scripts": {
     "dev": "vite --config vite.playground.config.ts",
     "build": "run-p type-check \"build-only {@}\" -- && pnpm run build-types && pnpm run build-css",
