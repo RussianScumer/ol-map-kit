@@ -47,9 +47,12 @@ async function installedVersion(pkg: string): Promise<string> {
   return version
 }
 
-export async function prepareConsumer(): Promise<Consumer> {
+export async function prepareConsumer(
+  onCleanup?: (cleanup: () => Promise<void>) => void,
+): Promise<Consumer> {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'ol-map-kit-consumer-'))
   const cleanup = (): Promise<void> => rm(dir, { recursive: true, force: true })
+  onCleanup?.(cleanup)
   try {
     const olVersion = await installedVersion('ol')
     const omsVersion = await installedVersion('ol-mapbox-style')

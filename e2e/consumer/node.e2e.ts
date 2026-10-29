@@ -5,6 +5,7 @@ import { expect, test } from '@playwright/test'
 import { prepareConsumer, run, type Consumer } from './setup'
 
 let consumer: Consumer | undefined
+let cleanupDir: (() => Promise<void>) | undefined
 
 const EXPECTED_EXPORTS: Record<string, string> = {
   DEFAULT_PALETTE: 'object',
@@ -34,11 +35,13 @@ const TARBALL_ENTRY = /^package\/(dist\/.+|package\.json|README[^/]*|LICENSE)$/
 
 test.beforeAll(async () => {
   test.setTimeout(300_000)
-  consumer = await prepareConsumer()
+  consumer = await prepareConsumer((c) => {
+    cleanupDir = c
+  })
 })
 
 test.afterAll(async () => {
-  await consumer?.cleanup()
+  await cleanupDir?.()
 })
 
 test('packed package installs offline and imports under Node ESM', async () => {

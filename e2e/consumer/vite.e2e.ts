@@ -29,6 +29,7 @@ const VITE = path.join(REPO_ROOT, 'node_modules', '.bin', 'vite')
 const POINTS = 20
 
 let consumer: Consumer | undefined
+let cleanupDir: (() => Promise<void>) | undefined
 let preview: ChildProcess | undefined
 let previewLog = ''
 
@@ -38,12 +39,23 @@ function hasExited(child: ChildProcess): boolean {
   return child.exitCode !== null || child.signalCode !== null
 }
 
+async function assertNothingOnIpv6(): Promise<void> {
+  try {
+    await fetch(`http://[::1]:${PORT}/`, { signal: AbortSignal.timeout(2000) })
+  } catch {
+    return
+  }
+  throw new Error(`something already listens on [::1]:${PORT}; Chromium would hit it instead of the preview`)
+}
+
 async function startPreview(appDir: string): Promise<ChildProcess> {
+  await assertNothingOnIpv6()
   const child = spawn(
     VITE,
     ['preview', appDir, '--port', String(PORT), '--strictPort', '--host', '127.0.0.1'],
     { cwd: appDir, env: { ...process.env, BROWSER: 'none' }, stdio: ['ignore', 'pipe', 'pipe'] },
   )
+  preview = child
   const collect = (chunk: Buffer): void => {
     previewLog += chunk.toString()
   }
@@ -76,7 +88,9 @@ async function stopPreview(child: ChildProcess | undefined): Promise<void> {
 
 test.beforeAll(async () => {
   test.setTimeout(420_000)
-  consumer = await prepareConsumer()
+  consumer = await prepareConsumer((c) => {
+    cleanupDir = c
+  })
   const appDir = path.join(consumer.dir, 'app')
   await cp(path.join(REPO_ROOT, 'e2e', 'consumer', 'app'), appDir, { recursive: true })
   await mkdir(path.join(appDir, 'public'), { recursive: true })
@@ -86,12 +100,12 @@ test.beforeAll(async () => {
   )
   await run(VITE, ['build', appDir], appDir)
   await access(path.join(appDir, 'dist', 'index.html'))
-  preview = await startPreview(appDir)
+  await startPreview(appDir)
 })
 
 test.afterAll(async () => {
   await stopPreview(preview)
-  await consumer?.cleanup()
+  await cleanupDir?.()
 })
 
 test('Vite-built consumer page renders the packed package', async ({ page, context }) => {
