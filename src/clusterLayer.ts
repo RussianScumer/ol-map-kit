@@ -1,9 +1,9 @@
-import type Feature from 'ol/Feature'
-import type { FeatureLike } from 'ol/Feature'
-import VectorSource from 'ol/source/Vector'
-import Cluster from 'ol/source/Cluster'
-import VectorLayer from 'ol/layer/Vector'
-import { Fill, Stroke, Style, Text } from 'ol/style'
+import type Feature from 'ol/Feature.js'
+import type { FeatureLike } from 'ol/Feature.js'
+import VectorSource from 'ol/source/Vector.js'
+import Cluster from 'ol/source/Cluster.js'
+import VectorLayer from 'ol/layer/Vector.js'
+import { Fill, Stroke, Style, Text } from 'ol/style.js'
 import { makePinIcon } from './styles'
 
 /** Default fill rule: the first truthy `color` property among the members, else red. */

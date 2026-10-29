@@ -1,10 +1,10 @@
 import { applyStyle } from 'ol-mapbox-style'
-import OlMap from 'ol/Map'
-import View from 'ol/View'
-import VectorTileLayer from 'ol/layer/VectorTile'
-import type BaseLayer from 'ol/layer/Base'
-import { defaults as defaultInteractions } from 'ol/interaction/defaults'
-import { useGeographic } from 'ol/proj'
+import OlMap from 'ol/Map.js'
+import View from 'ol/View.js'
+import VectorTileLayer from 'ol/layer/VectorTile.js'
+import type BaseLayer from 'ol/layer/Base.js'
+import { defaults as defaultInteractions } from 'ol/interaction/defaults.js'
+import { useGeographic } from 'ol/proj.js'
 import type { LngLat } from './types'
 
 export interface BaseMapOptions {

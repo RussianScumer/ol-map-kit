@@ -33,8 +33,8 @@ import '@korneevecin/ol-map-kit/style.css'
 ## Быстрый старт
 
 ```ts
-import Feature from 'ol/Feature'
-import Point from 'ol/geom/Point'
+import Feature from 'ol/Feature.js'
+import Point from 'ol/geom/Point.js'
 import {
   createBaseMap,
   createClusterLayer,

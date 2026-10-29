@@ -1,4 +1,4 @@
-import type OlMap from 'ol/Map'
+import type OlMap from 'ol/Map.js'
 
 export type ClickMode = 'cluster' | 'pick'
 

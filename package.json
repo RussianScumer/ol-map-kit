@@ -1,6 +1,6 @@
 {
   "name": "@korneevecin/ol-map-kit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "packageManager": "pnpm@10.28.1",
   "description": "Framework-agnostic OpenLayers map core: base map, cluster layer, popup, selection box and route layers.",
@@ -17,10 +17,11 @@
   },
   "scripts": {
     "dev": "vite --config vite.playground.config.ts",
-    "build": "run-p type-check \"build-only {@}\" -- && pnpm run build-types && pnpm run build-css",
+    "build": "run-p type-check \"build-only {@}\" -- && pnpm run build-types && pnpm run build-css && pnpm run check-dist",
     "build-only": "vite build",
     "build-types": "tsc -p tsconfig.lib.json",
     "build-css": "node -e \"require('node:fs').copyFileSync('src/style.css','dist/style.css')\"",
+    "check-dist": "node --input-type=module -e \"await import('@korneevecin/ol-map-kit')\"",
     "type-check": "tsc --build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

@@ -1,6 +1,6 @@
 import { DEFAULT_PALETTE, paletteColor } from '../src/index'
 import type { LngLat, MultiRouteInput, RouteLayerInput } from '../src/index'
-import type Feature from 'ol/Feature'
+import type Feature from 'ol/Feature.js'
 
 export interface SamplePoint {
   id: number

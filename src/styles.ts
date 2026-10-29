@@ -1,4 +1,4 @@
-import { Fill, Icon, Stroke, Style, Text } from 'ol/style'
+import { Fill, Icon, Stroke, Style, Text } from 'ol/style.js'
 
 function pinSvg(fill: string, stroke: string, strokeWidth: number): string {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="36" height="48">

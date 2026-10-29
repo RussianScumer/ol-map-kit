@@ -1,5 +1,5 @@
-import type OlMap from 'ol/Map'
-import { isEmpty, type Extent } from 'ol/extent'
+import type OlMap from 'ol/Map.js'
+import { isEmpty, type Extent } from 'ol/extent.js'
 
 export interface FitToSourceOptions {
   padding: number[]

@@ -1,8 +1,8 @@
-import Overlay from 'ol/Overlay'
-import type OlMap from 'ol/Map'
-import type { FeatureLike } from 'ol/Feature'
-import type { Pixel } from 'ol/pixel'
-import type BaseLayer from 'ol/layer/Base'
+import Overlay from 'ol/Overlay.js'
+import type OlMap from 'ol/Map.js'
+import type { FeatureLike } from 'ol/Feature.js'
+import type { Pixel } from 'ol/pixel.js'
+import type BaseLayer from 'ol/layer/Base.js'
 import type { LngLat } from './types'
 
 export type PopupHandle = {

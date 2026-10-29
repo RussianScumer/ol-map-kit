@@ -1,9 +1,9 @@
-import Feature from 'ol/Feature'
-import type OlMap from 'ol/Map'
-import Point from 'ol/geom/Point'
-import VectorLayer from 'ol/layer/Vector'
-import VectorSource from 'ol/source/Vector'
-import { Style } from 'ol/style'
+import Feature from 'ol/Feature.js'
+import type OlMap from 'ol/Map.js'
+import Point from 'ol/geom/Point.js'
+import VectorLayer from 'ol/layer/Vector.js'
+import VectorSource from 'ol/source/Vector.js'
+import { Style } from 'ol/style.js'
 import { makePinIcon } from './styles'
 
 export interface PickMarkerHandle {

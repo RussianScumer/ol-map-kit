@@ -1,6 +1,6 @@
 import { createMultiRouteLayer, createRouteLayer, fitToSource } from '../src/index'
-import type VectorLayer from 'ol/layer/Vector'
-import type VectorSource from 'ol/source/Vector'
+import type VectorLayer from 'ol/layer/Vector.js'
+import type VectorSource from 'ol/source/Vector.js'
 import { byId } from './dom'
 import type { DemoContext } from './dom'
 import { MULTI_ROUTE_SAMPLE, ROUTE_SAMPLE } from './sampleData'

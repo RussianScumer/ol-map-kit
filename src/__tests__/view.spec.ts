@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import type OlMap from 'ol/Map'
-import type { Extent } from 'ol/extent'
+import type OlMap from 'ol/Map.js'
+import type { Extent } from 'ol/extent.js'
 import { fitToSource } from '../view'
 
 const options = { padding: [50, 50, 50, 50], maxZoom: 7 }

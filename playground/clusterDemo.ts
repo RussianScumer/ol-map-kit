@@ -1,6 +1,6 @@
-import Feature from 'ol/Feature'
-import Point from 'ol/geom/Point'
-import type MapBrowserEvent from 'ol/MapBrowserEvent'
+import Feature from 'ol/Feature.js'
+import Point from 'ol/geom/Point.js'
+import type MapBrowserEvent from 'ol/MapBrowserEvent.js'
 import {
   createClusterLayer,
   DEFAULT_PALETTE,

@@ -21,6 +21,19 @@ export default defineConfig(
       },
     },
     rules: {
+      // `ol` has no `exports` map: under Node's ESM loader `ol/style` is a directory import and throws
+      // ERR_UNSUPPORTED_DIR_IMPORT. Consumers that externalize this package (vitest, SSR) hit it.
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^ol/(?!.*\\.(?:js|css)$)',
+              message: "Import OpenLayers subpaths with the extension, e.g. 'ol/Map.js'.",
+            },
+          ],
+        },
+      ],
       // Omitting a key by naming it beside a rest property is the idiom for stripping it; the
       // binding exists to be discarded, and an underscore says so.
       '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, varsIgnorePattern: '^_' }],
