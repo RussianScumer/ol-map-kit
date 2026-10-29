@@ -160,4 +160,4 @@ pnpm build   # dist/: ESM-сборка, типы и style.css
 
 ## Лицензия
 
-MIT
+[MIT](LICENSE)

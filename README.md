@@ -157,4 +157,4 @@ pnpm build   # dist/ with ESM bundle, types and style.css
 
 ## License
 
-MIT
+[MIT](LICENSE)
